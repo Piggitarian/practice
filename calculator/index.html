@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <!-- css written by ai -->
+    <style>
+        /* 1. The main background and font */
+        body {
+            background-color: #121212; /* Deep blackish-gray */
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* 2. The calculator card */
+        .calculator-card {
+            background-color: #1e1e1e; /* Slightly lighter than the body */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5); /* Soft drop shadow */
+            text-align: center;
+            width: 300px;
+        }
+
+        /* 3. The input fields */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+            border-radius: 6px;
+            background-color: #2c2c2c;
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box; /* Keeps padding inside the width */
+        }
+
+        /* 4. Input focus effect */
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3b82f6; /* Blue highlight when typing */
+        }
+
+        /* 5. Arranging buttons in a 2x2 grid */
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* 6. Button styling */
+        button {
+            background-color: #3b82f6; /* Nice modern blue */
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        /* 7. Button hover and click animations */
+        button:hover {
+            background-color: #2563eb;
+        }
+        button:active {
+            transform: scale(0.96); /* Tiny shrink effect on click */
+        }
+
+        /* 8. The final answer display */
+        #response {
+            font-size: 28px;
+            font-weight: bold;
+            color: #10b981; /* Emerald green for the result */
+            min-height: 35px; /* Prevents the card from resizing before an answer appears */
+        }
+    </style>
+    <script>
+
+        async function calculate(operation) {
+            const a = document.getElementById("a").value;
+            const b = document.getElementById("b").value;
+
+            const res = await fetch(`http://localhost:3000/${operation}`,{
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json"
+                },
+                body: JSON.stringify({
+                    a: a,
+                    b: b
+                })
+            });
+            const json = await res.json();
+
+            document.getElementById("response").innerHTML = json.ans;
+        }
+    </script>
+</head>
+<body>
+
+    <div class="calculator-card">
+        <h2>Calculator</h2>
+
+        <input type="text" id="a" placeholder="First number">
+        <input type="text" id="b" placeholder="Second number">
+
+        <div class="button-grid">
+            <button onclick="calculate('add');">Add</button>
+            <button onclick="calculate('sub');">Subtract</button>
+            <button onclick="calculate('multiply');">Multiply</button>
+            <button onclick="calculate('divide');">Divide</button>
+        </div>
+
+        <div id="response"></div>
+    </div>
+
+</body>
+</html>

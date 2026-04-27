@@ -1,43 +1,88 @@
+const app = require("./src/app");
 const express = require("express");
-//importing app.js
-const app = require("./src/app.js");
-
-//using middleware
+const path = require("path");
 app.use(express.json());
-//addition
-app.get("/sum", (req,res)=>{
-    const a = parseInt(req.query.a);
-    const b = parseInt(req.query.b);
 
-    const sum = a+b;
-    res.send(sum);
-})
-//subtraction
-app.get("/sub", (req,res)=>{
-    const a = parseInt(req.query.a);
-    const b = parseInt(req.query.b);
+app.get("/",(req,res)=>{
+    res.sendFile(path.join( __dirname ,"/index.html"));
+});
+//creating a post request
+app.post("/add",(req,res)=>{
+    const a = parseInt(req.body.a);
+    const b = parseInt(req.body.b);
+    const sum = a + b ;
 
-    const sum = a-b;
-    res.send(sum);
-})
-//product
-app.get("/pro", (req,res)=>{
-    const a = parseInt(req.query.a);
-    const b = parseInt(req.query.b);
+    res.json({
+        ans: sum
+     });
+});
+app.post("/sub",(req,res)=>{
+    const a = parseInt(req.body.a);
+    const b = parseInt(req.body.b);
+    const sub = a - b ;
 
-    const sum = a*b;
-    res.send(sum);
-})
-//divide
-app.get("/div", (req,res)=>{
-    const a = parseInt(req.query.a);
-    const b = parseInt(req.query.b);
+    res.json({
+        ans: sub
+     });
+});
+app.post("/multiply",(req,res)=>{
+    const a = parseInt(req.body.a);
+    const b = parseInt(req.body.b);
+    const multiply = a * b ;
 
-    const sum = a/b;
-    res.send(sum);
-})
+    res.json({
+        ans: multiply
+     });
+});
+app.post("/divide",(req,res)=>{
+    const a = parseInt(req.body.a);
+    const b = parseInt(req.body.b);
+    const divide = a / b ;
 
-//starting server
-app.listen(3000, ()=>{
-    console.log("everything works fine");
+    res.json({
+        ans: divide
+     });
+});
+
+// here we are creating a get request
+// // app.get("/add/:a/:b",(req,res)=>{
+// //     const a = parseInt(req.params.a);
+// //     const b = parseInt(req.params.b);
+// //     const sum = a +b ;
+
+// //     res.json({
+// //         ans: sum
+// //      });
+// // });
+// // app.get("/sub/:a/:b",(req,res)=>{
+// //     const a = parseInt(req.params.a);
+// //     const b = parseInt(req.params.b);
+// //     const sub = a - b ;
+
+// //     res.json({
+// //         ans: sub
+// //      });
+// // });
+// // app.get("/multiply/:a/:b",(req,res)=>{
+// //     const a = parseInt(req.params.a);
+// //     const b = parseInt(req.params.b);
+// //     const multiply = a * b ;
+
+// //     res.json({
+// //         ans: multiply
+// //      });
+// // });
+// // app.get("/divide/:a/:b",(req,res)=>{
+// //     const a = parseInt(req.params.a);
+// //     const b = parseInt(req.params.b);
+// //     const divide = a/b ;
+
+// //     res.json({
+// //         ans: divide
+// //      });
+// // });
+// all the get requests 
+
+app.listen(3000,()=>{
+    console.log("works fine");
 });
